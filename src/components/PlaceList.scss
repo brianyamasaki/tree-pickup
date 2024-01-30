@@ -1,0 +1,18 @@
+.tree-list {
+  padding: 0;
+  li {
+    margin: 0.5rem;
+    padding: 0.5rem;
+    background-color: burlywood;
+    border-radius: 0.5rem;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    .tree-id {
+      font-size: 1.8rem;
+    }
+    button {
+      float: right;
+    }
+  }
+}
