@@ -1,5 +1,5 @@
 import React from 'react';
-import GoogleMap from './React-Map.tsx';
+import GoogleMap from './React-Google-map.tsx';
 import type { Place } from './React-Map.tsx';
 import PlaceList from './PlaceList.tsx';
 
@@ -37,13 +37,7 @@ const initPlaces: Place[] = [
 const TreeMap = () => {
   const [places, setPlaces ] = React.useState(initPlaces.slice(0));
 
-  const removeMarker = (id: number) => {
-    const foundPlace = places.find((place) => place.id === id);
-    if (!foundPlace) return;
-    if (foundPlace.marker) {
-      // erase marker from map
-      foundPlace.marker.setMap(null);
-    }
+  const removeMarker = (id: number): void => {
     const newPlaces = places.filter((place) => (place.id !== id));
     setPlaces(newPlaces);
   }
@@ -51,7 +45,7 @@ const TreeMap = () => {
   return (
     <>
       <GoogleMap places={places} />
-      <PlaceList places={places} fnRemove={removeMarker} />
+      <PlaceList places={places} fnRemove={removeMarker}/>
     </>
   )
 }
