@@ -33,7 +33,6 @@ export type Place = {
   name: string;
   address: string;
   pos: Position;
-  marker?: any;
 };
 
 type Props = {
@@ -91,6 +90,7 @@ const posMcAuliffe: Position = {
 
 const ReactGoogleMap = ({places}: Props) => {
   const [ useLocation, setUseLocation ] = React.useState(false);
+  const [ showRegions, setShowRegions ] = React.useState(false);
   const [ errorMessage, setErrorMessage] = React.useState('');
   const [ myLocation, setMyLocation ] = React.useState(posMcAuliffe);
 
@@ -98,7 +98,7 @@ const ReactGoogleMap = ({places}: Props) => {
     if (!useLocation) return;
 
     return (
-      <Marker position={myLocation} label="Me" icon="/carIcon.svg" />
+      <Marker position={myLocation} label="Me" icon="/heartIcon.svg" />
     )
   }
   
@@ -131,7 +131,7 @@ const ReactGoogleMap = ({places}: Props) => {
 
   return (
     <div>
-      <MapControls fnUseLocation={setLocation} />
+      <MapControls fnUseLocation={setLocation} fnShowRegions={(f) => setShowRegions(f)}/>
       {errorMessage ? <span className="error">errorMessage</span> : ''}
       <div className="map" >
         <APIProvider apiKey={API_KEY}>
@@ -141,7 +141,7 @@ const ReactGoogleMap = ({places}: Props) => {
             gestureHandling={"greedy"}
             disableDefaultUI={true}
           >
-            {regions.map((region, i) => (
+            {showRegions ? regions.map((region, i) => (
               <Polygon
                 key={i}
                 fillColor={region.fill}
@@ -150,6 +150,7 @@ const ReactGoogleMap = ({places}: Props) => {
                 strokeOpacity={0.5}
               />
             ))
+              : <></>
             }
             {places.map(place => (
                 <Marker 
