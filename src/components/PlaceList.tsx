@@ -1,7 +1,7 @@
 import React from 'react';
 import "./PlaceList.scss";
 
-import type { Place } from './React-Map.tsx';
+import type { Place } from './React-Google-map.tsx';
 
 type Props = {
   places: Place[];

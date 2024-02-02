@@ -1,6 +1,6 @@
 import React from 'react';
 import GoogleMap from './React-Google-map.tsx';
-import type { Place } from './React-Map.tsx';
+import type { Place } from './React-Google-map.tsx';
 import PlaceList from './PlaceList.tsx';
 
 const initPlaces: Place[] = [
