@@ -4,10 +4,18 @@ import TreeMap from '../components/TreeMap.tsx';
 
 ---
 
-<Layout title="Welcome to Astro.">
+<Layout title="Troop 570 Tree Pickup App">
 	<main>
-		<h1>Google Maps test page</h1>
+		<h1>Tree Pickup App</h1>
 		<TreeMap client:only="react"  />
 	</main>
 </Layout>
 
+<style>
+	main {
+		max-width: 600px;
+	}
+	h1 {
+		text-align: center;
+	}
+</style>
