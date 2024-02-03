@@ -93,38 +93,53 @@ const ReactGoogleMap = ({places}: Props) => {
   const [ showRegions, setShowRegions ] = React.useState(false);
   const [ errorMessage, setErrorMessage] = React.useState('');
   const [ myLocation, setMyLocation ] = React.useState(posMcAuliffe);
+  const [ locationWatchId, setLocationWatchId] =  React.useState(0);
 
-  const locationMarker = () => {
+  const renderLocationMarker = () => {
     if (!useLocation) return;
 
     return (
       <Marker position={myLocation} label="Me" icon="/heartIcon.svg" />
     )
   }
+
+  const locationSuccess = (position: GeolocationPosition) => {
+    setMyLocation({
+      lat: position.coords.latitude,
+      lng: position.coords.longitude,
+    });
+    setErrorMessage('');
+    setUseLocation(true);
+    console.log(position.coords.latitude, position.coords.longitude);
+  }
+
+  const locationError = () => {
+    setErrorMessage('Error: Location service has failed');
+    setUseLocation(false);
+  }
   
   const setLocation = (f: boolean) => {
     if (f) {
+      const options = {
+        timeout: 5000
+      }
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position: GeolocationPosition) => {
-            const pos = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude,
-            };
-            setMyLocation(pos);
-            setUseLocation(f);
-          },
-          () => {
-            setErrorMessage('Error: Location service has failed');
-            setUseLocation(false);
-          }
+        const id = navigator.geolocation.watchPosition( 
+          locationSuccess,
+          locationError,
+          options
         );
+        setLocationWatchId(id);
       } else {
         // Browser doesn't support Geolocation
-        setErrorMessage('Error: Location service has failed');
+        setErrorMessage('Error: No Location Service available');
         setUseLocation(false);
       }
     } else {
+      if (navigator.geolocation) {
+        navigator.geolocation.clearWatch(locationWatchId);
+        setLocationWatchId(0);
+      }
       setUseLocation(false);
     }
   }
@@ -162,7 +177,7 @@ const ReactGoogleMap = ({places}: Props) => {
                 />
               )
             )}
-            {locationMarker()}
+            {renderLocationMarker()}
           </Map>
         </APIProvider>
       </div>
